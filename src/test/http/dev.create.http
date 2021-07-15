@@ -1,0 +1,12 @@
+### create developer
+POST http://localhost:8080/create-developer
+Content-Type: application/json
+
+{
+  "developerLevel": "JUNIOR",
+  "developerSkillType": "FULL_STACK",
+  "experienceYears": 2,
+  "memberId": "1",
+  "name": "sun",
+  "age": 36
+}
