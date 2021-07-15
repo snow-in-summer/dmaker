@@ -1,10 +1,14 @@
 package com.developers.dmaker.service;
 
 import com.developers.dmaker.dto.CreateDeveloper;
+import com.developers.dmaker.dto.DeveloperDto;
 import com.developers.dmaker.entity.Developer;
 import com.developers.dmaker.repository.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Snow
@@ -25,5 +29,11 @@ public class DMakerService {
                 .build();
         developerRepository.save(developer);
         return CreateDeveloper.Response.fromEntity(developer);
+    }
+
+    public List<DeveloperDto> getAllDevelopers() {
+        return developerRepository.findAll()
+                .stream().map(DeveloperDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
