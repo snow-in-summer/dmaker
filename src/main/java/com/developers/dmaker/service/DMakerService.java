@@ -1,14 +1,18 @@
 package com.developers.dmaker.service;
 
 import com.developers.dmaker.dto.CreateDeveloper;
+import com.developers.dmaker.dto.DeveloperDetailDto;
 import com.developers.dmaker.dto.DeveloperDto;
 import com.developers.dmaker.entity.Developer;
+import com.developers.dmaker.exception.DMakerException;
 import com.developers.dmaker.repository.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.developers.dmaker.code.DMakerErrorCode.NO_DEVELOPER;
 
 /**
  * @author Snow
@@ -35,5 +39,13 @@ public class DMakerService {
         return developerRepository.findAll()
                 .stream().map(DeveloperDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public DeveloperDetailDto getDeveloper(String memberId) {
+        return developerRepository.findByMemberId(memberId)
+                .map(DeveloperDetailDto::fromEntity)
+                .orElseThrow(
+                        () -> new DMakerException(NO_DEVELOPER)
+                );
     }
 }

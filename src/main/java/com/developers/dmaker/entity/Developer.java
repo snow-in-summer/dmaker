@@ -26,8 +26,12 @@ public class Developer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+    @Enumerated(EnumType.STRING)
     private DeveloperLevel developerLevel;
+
+    @Enumerated(EnumType.STRING)
     private DeveloperSkillType developerSkillType;
+
     private Integer experienceYears;
     private String memberId;
     private String name;
