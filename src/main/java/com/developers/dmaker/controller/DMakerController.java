@@ -1,15 +1,14 @@
 package com.developers.dmaker.controller;
 
 import com.developers.dmaker.dto.CreateDeveloper;
+import com.developers.dmaker.dto.DeveloperDetailDto;
 import com.developers.dmaker.dto.DeveloperDto;
+import com.developers.dmaker.dto.EditDeveloper;
 import com.developers.dmaker.service.DMakerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,10 +23,10 @@ public class DMakerController {
 
     @PostMapping("/create-developer")
     public ResponseEntity<CreateDeveloper.Response> createDeveloper(
-            @RequestBody CreateDeveloper.Request developerRequest
+            @RequestBody CreateDeveloper.Request request
     ) {
         return ResponseEntity.ok(
-                dMakerService.createDeveloper(developerRequest)
+                dMakerService.createDeveloper(request)
         );
     }
 
@@ -38,4 +37,22 @@ public class DMakerController {
         );
     }
 
+    @GetMapping("/developer/{memberId}")
+    public ResponseEntity<DeveloperDetailDto> getDeveloper(
+            @PathVariable String memberId
+    ) {
+        return ResponseEntity.ok(
+                dMakerService.getDeveloper(memberId)
+        );
+    }
+
+    @PutMapping("/developer/{memberId}")
+    public ResponseEntity<DeveloperDetailDto> updateDeveloper(
+            @PathVariable String memberId,
+            @RequestBody EditDeveloper.Request request
+            ) {
+        return ResponseEntity.ok(
+                dMakerService.getDeveloper(memberId)
+        );
+    }
 }
