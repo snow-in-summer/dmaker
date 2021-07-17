@@ -1,0 +1,11 @@
+### create developer
+PUT http://localhost:8080/developer/sunny.flower
+Content-Type: application/json
+
+{
+  "developerLevel": "SENIOR",
+  "developerSkillType": "FULL_STACK",
+  "experienceYears": 4,
+  "name": "sun",
+  "age": 36
+}

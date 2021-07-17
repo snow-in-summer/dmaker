@@ -3,11 +3,13 @@ package com.developers.dmaker.service;
 import com.developers.dmaker.dto.CreateDeveloper;
 import com.developers.dmaker.dto.DeveloperDetailDto;
 import com.developers.dmaker.dto.DeveloperDto;
+import com.developers.dmaker.dto.EditDeveloper;
 import com.developers.dmaker.entity.Developer;
 import com.developers.dmaker.exception.DMakerException;
 import com.developers.dmaker.repository.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +49,22 @@ public class DMakerService {
                 .orElseThrow(
                         () -> new DMakerException(NO_DEVELOPER)
                 );
+    }
+
+    @Transactional
+    public DeveloperDetailDto editDeveloper(
+            String memberId, EditDeveloper.Request request
+    ) {
+        Developer developer = developerRepository.findByMemberId(memberId)
+                .orElseThrow(
+                        () -> new DMakerException(NO_DEVELOPER)
+                );
+        developer.setDeveloperLevel(request.getDeveloperLevel());
+        developer.setDeveloperSkillType(request.getDeveloperSkillType());
+        developer.setExperienceYears(request.getExperienceYears());
+        developer.setName(request.getName());
+        developer.setAge(request.getAge());
+
+        return DeveloperDetailDto.fromEntity(developer);
     }
 }

@@ -52,7 +52,7 @@ public class DMakerController {
             @RequestBody EditDeveloper.Request request
             ) {
         return ResponseEntity.ok(
-                dMakerService.getDeveloper(memberId)
+                dMakerService.editDeveloper(memberId, request)
         );
     }
 }
