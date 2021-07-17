@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class DMakerController {
 
     @PostMapping("/create-developer")
     public ResponseEntity<CreateDeveloper.Response> createDeveloper(
-            @RequestBody CreateDeveloper.Request request
+            @Valid @RequestBody CreateDeveloper.Request request
     ) {
         return ResponseEntity.ok(
                 dMakerService.createDeveloper(request)
@@ -49,7 +50,7 @@ public class DMakerController {
     @PutMapping("/developer/{memberId}")
     public ResponseEntity<DeveloperDetailDto> updateDeveloper(
             @PathVariable String memberId,
-            @RequestBody EditDeveloper.Request request
+            @Valid @RequestBody EditDeveloper.Request request
     ) {
         return ResponseEntity.ok(
                 dMakerService.editDeveloper(memberId, request)

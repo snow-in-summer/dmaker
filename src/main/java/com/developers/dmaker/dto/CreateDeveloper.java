@@ -5,6 +5,10 @@ import com.developers.dmaker.type.DeveloperLevel;
 import com.developers.dmaker.type.DeveloperSkillType;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author Snow
  */
@@ -16,11 +20,26 @@ public class CreateDeveloper {
     @NoArgsConstructor
     @Builder
     public static class Request {
+        @NotNull
         private DeveloperLevel developerLevel;
+
+        @NotNull
         private DeveloperSkillType developerSkillType;
+
+        @NotNull
+        @Min(0)
         private Integer experienceYears;
+
+        @NotNull
+        @Size(min = 3, max = 50, message = "invalid memberId")
         private String memberId;
+
+        @NotNull
+        @Size(min = 2, max = 50, message = "invalid name")
         private String name;
+
+        @NotNull
+        @Min(18)
         private Integer age;
     }
 
