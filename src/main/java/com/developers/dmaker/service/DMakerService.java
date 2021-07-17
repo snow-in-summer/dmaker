@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.developers.dmaker.code.DMakerErrorCode.*;
+import static com.developers.dmaker.constant.DMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS;
+import static com.developers.dmaker.constant.DMakerConstant.MIN_SENIOR_EXPERIENCE_YEARS;
 
 /**
  * @author Snow
@@ -52,12 +54,19 @@ public class DMakerService {
                 });
 
         if (request.getDeveloperLevel() == DeveloperLevel.SENIOR
-                && request.getExperienceYears() < 10) {
+                && request.getExperienceYears() < MIN_SENIOR_EXPERIENCE_YEARS) {
+            throw new DMakerException(LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH);
+        }
+
+        if (request.getDeveloperLevel() == DeveloperLevel.JUNGNIOR
+                && (request.getExperienceYears() > MIN_SENIOR_EXPERIENCE_YEARS
+                || request.getExperienceYears() < MAX_JUNIOR_EXPERIENCE_YEARS)
+        ) {
             throw new DMakerException(LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH);
         }
 
         if (request.getDeveloperLevel() == DeveloperLevel.JUNIOR
-                && request.getExperienceYears() > 5) {
+                && request.getExperienceYears() > MAX_JUNIOR_EXPERIENCE_YEARS) {
             throw new DMakerException(LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH);
         }
     }
