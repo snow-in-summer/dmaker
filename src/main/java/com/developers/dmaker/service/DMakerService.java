@@ -10,6 +10,7 @@ import com.developers.dmaker.entity.RetiredDeveloper;
 import com.developers.dmaker.exception.DMakerException;
 import com.developers.dmaker.repository.DeveloperRepository;
 import com.developers.dmaker.repository.RetiredDeveloperRepository;
+import com.developers.dmaker.type.DeveloperLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.developers.dmaker.code.DMakerErrorCode.NO_DEVELOPER;
+import static com.developers.dmaker.code.DMakerErrorCode.*;
 
 /**
  * @author Snow
@@ -28,7 +29,10 @@ public class DMakerService {
     private final DeveloperRepository developerRepository;
     private final RetiredDeveloperRepository retiredDeveloperRepository;
 
+    @Transactional
     public CreateDeveloper.Response createDeveloper(CreateDeveloper.Request request) {
+        validateCreateDeveloperRequest(request);
+
         Developer developer = Developer.builder()
                 .developerLevel(request.getDeveloperLevel())
                 .developerSkillType(request.getDeveloperSkillType())
@@ -41,12 +45,31 @@ public class DMakerService {
         return CreateDeveloper.Response.fromEntity(developer);
     }
 
+    private void validateCreateDeveloperRequest(CreateDeveloper.Request request) {
+        developerRepository.findByMemberId(request.getMemberId())
+                .ifPresent((developer) -> {
+                    throw new DMakerException(DUPLICATED_MEMBER_ID);
+                });
+
+        if (request.getDeveloperLevel() == DeveloperLevel.SENIOR
+                && request.getExperienceYears() < 10) {
+            throw new DMakerException(LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH);
+        }
+
+        if (request.getDeveloperLevel() == DeveloperLevel.JUNIOR
+                && request.getExperienceYears() > 5) {
+            throw new DMakerException(LEVEL_AND_EXPERIENCE_YEARS_NOT_MATCH);
+        }
+    }
+
+    @Transactional
     public List<DeveloperDto> getAllEmployedDevelopers() {
         return developerRepository.findDevelopersByStatusEquals(StatusCode.EMPLOYED)
                 .stream().map(DeveloperDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public DeveloperDetailDto getDeveloper(String memberId) {
         return developerRepository.findByMemberId(memberId)
                 .map(DeveloperDetailDto::fromEntity)
