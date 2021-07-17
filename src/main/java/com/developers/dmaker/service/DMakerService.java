@@ -72,7 +72,7 @@ public class DMakerService {
         return DeveloperDetailDto.fromEntity(developer);
     }
 
-    @Transactional
+//    @Transactional
     public DeveloperDetailDto deleteDeveloper(
             String memberId
     ) {
@@ -82,6 +82,9 @@ public class DMakerService {
                 );
 
         developer.setStatus(StatusCode.RETIRED);
+        developerRepository.save(developer);
+
+        if(developer.getDeveloperLevel() != null) throw new DMakerException(NO_DEVELOPER);
 
         RetiredDeveloper retiredDeveloper = RetiredDeveloper.builder()
                 .memberId(developer.getMemberId())
