@@ -1,5 +1,6 @@
 package com.developers.dmaker.service;
 
+import com.developers.dmaker.code.StatusCode;
 import com.developers.dmaker.dto.CreateDeveloper;
 import com.developers.dmaker.dto.DeveloperDetailDto;
 import com.developers.dmaker.dto.DeveloperDto;
@@ -37,8 +38,8 @@ public class DMakerService {
         return CreateDeveloper.Response.fromEntity(developer);
     }
 
-    public List<DeveloperDto> getAllDevelopers() {
-        return developerRepository.findAll()
+    public List<DeveloperDto> getAllEmployedDevelopers() {
+        return developerRepository.findDevelopersByStatusEquals(StatusCode.EMPLOYED)
                 .stream().map(DeveloperDto::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -65,6 +66,19 @@ public class DMakerService {
         developer.setName(request.getName());
         developer.setAge(request.getAge());
 
+        return DeveloperDetailDto.fromEntity(developer);
+    }
+
+    @Transactional
+    public DeveloperDetailDto deleteDeveloper(
+            String memberId
+    ) {
+        Developer developer = developerRepository.findByMemberId(memberId)
+                .orElseThrow(
+                        () -> new DMakerException(NO_DEVELOPER)
+                );
+
+        developer.setStatus(StatusCode.RETIRED);
         return DeveloperDetailDto.fromEntity(developer);
     }
 }

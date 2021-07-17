@@ -33,7 +33,7 @@ public class DMakerController {
     @GetMapping("/developers")
     public ResponseEntity<List<DeveloperDto>> getDevelopers() {
         return ResponseEntity.ok(
-                dMakerService.getAllDevelopers()
+                dMakerService.getAllEmployedDevelopers()
         );
     }
 
@@ -50,9 +50,18 @@ public class DMakerController {
     public ResponseEntity<DeveloperDetailDto> updateDeveloper(
             @PathVariable String memberId,
             @RequestBody EditDeveloper.Request request
-            ) {
+    ) {
         return ResponseEntity.ok(
                 dMakerService.editDeveloper(memberId, request)
+        );
+    }
+
+    @DeleteMapping("/developer/{memberId}")
+    public ResponseEntity<DeveloperDetailDto> deleteDeveloper(
+            @PathVariable String memberId
+    ) {
+        return ResponseEntity.ok(
+                dMakerService.deleteDeveloper(memberId)
         );
     }
 }
