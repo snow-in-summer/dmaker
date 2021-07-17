@@ -6,7 +6,7 @@ Content-Type: application/json
   "developerLevel": "JUNIOR",
   "developerSkillType": "FULL_STACK",
   "experienceYears": 2,
-  "memberId": "1",
+  "memberId": "sunny.flower",
   "name": "sun",
   "age": 36
 }
