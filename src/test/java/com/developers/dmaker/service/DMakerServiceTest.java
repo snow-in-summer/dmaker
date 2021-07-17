@@ -47,8 +47,8 @@ class DMakerServiceTest {
         DeveloperDetailDto developer = dMakerService.getDeveloper("memberId");
 
         //then
-        assertEquals(JUNGNIOR, developer.getDeveloperLevel());
-        assertEquals(FULL_STACK, developer.getDeveloperSkillType());
+        assertEquals(JUNIOR, developer.getDeveloperLevel());
+        assertEquals(FRONT_END, developer.getDeveloperSkillType());
         assertEquals(5, developer.getExperienceYears());
     }
 
